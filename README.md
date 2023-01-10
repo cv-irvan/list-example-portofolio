@@ -1,6 +1,20 @@
-# pdam
+## pdam
 
-A new Flutter project.
+# This is a list of examples of portfolios I've worked on.
+
+# - Clone UI Gojek 
+# - Clone UI Tokopedia
+# - UI PDAM Transaction
+# - GRPC Protobuf
+# - Deeplink
+# - Google Machine Learning
+# - Mailer
+# - Maps Picker
+# - Cliper path
+# - Fatch API with Dio
+
+
+
 
 ## Getting Started
 
