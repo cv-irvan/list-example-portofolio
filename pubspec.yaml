@@ -8,13 +8,33 @@ environment:
 dependencies: 
   cupertino_icons: ^1.0.2
   get: 4.6.5
-  flutter: 
-    sdk: flutter
   url_launcher: ^6.1.5
   font_awesome_flutter: ^10.1.0
   grpc: ^3.0.2
   protobuf: ^2.1.0
-
+  google_fonts: ^3.0.1
+  flutter_svg: ^1.1.5
+  http: ^0.13.5
+  carousel_slider: ^4.1.1
+  camera: ^0.10.0+1
+  path_provider: ^2.0.11
+  google_ml_kit: ^0.12.0
+  mailer: ^5.2.0
+  dio: ^4.0.6
+  app_links: ^3.3.0
+  lottie: ^1.4.3
+  intl: ^0.17.0
+  path: ^1.8.2
+  cached_network_image: ^3.2.2
+  geolocator: ^9.0.2
+  permission_handler: ^10.2.0
+  flutter_map: ^3.0.0
+  flutter_rating_bar: ^4.0.1
+  image_picker: ^0.8.6
+  material_design_icons_flutter: 6.0.7096
+  crypto: 3.0.2
+  flutter: 
+    sdk: flutter
 
 dev_dependencies: 
   flutter_lints: 2.0.1
@@ -22,7 +42,11 @@ dev_dependencies:
     sdk: flutter
 
 flutter: 
-  uses-material-design: true
-  assets:
+  fonts: 
+    - family: SimpleSignature
+      fonts: 
+        - asset: assets/SimpleSignature.otf
+  assets: 
     - assets/
+  uses-material-design: true
 

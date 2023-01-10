@@ -9,7 +9,22 @@ message Message {
     string message = 2;
 }
 
+message InputGetProvinsi {
+    int64 kode_provinsi = 1;
+}
+
+message OutputGetProvinsi {
+    string kode_provinsi = 1;
+    string nama_provinsi = 2;
+}
+
+message MyResponse {
+    string rc = 1;
+    string rc_desc = 2;
+    repeated OutputGetProvinsi provinsi = 3;
+}
+
 service Calculator {
+    rpc GetProvinsi(InputGetProvinsi) returns (MyResponse) {}
     rpc SquareRoot(Number) returns (Message) {}
-    rpc SquareRoot2(Number) returns (Message) {}
 }

@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:crypto/crypto.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -82,7 +87,7 @@ class _PDAMState extends State<PDAM> {
                   style: TextStyle(fontSize: 14),
                 ),
                 trailing: Text(
-                  'Rp. 173.000',
+                  'Rp. 31.000',
                   style: TextStyle(fontSize: 14),
                 ),
               ),
@@ -124,7 +129,7 @@ class _PDAMState extends State<PDAM> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
                     Text('Tagihan'),
-                    Text('Rp. 173.000'),
+                    Text('Rp. 31.000'),
                   ],
                 ),
               ),
@@ -161,7 +166,7 @@ class _PDAMState extends State<PDAM> {
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      'Rp. 177.000',
+                      'Rp. 35.000',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                       ),
@@ -268,7 +273,7 @@ class _PDAMState extends State<PDAM> {
                         height: 8,
                       ),
                       Text(
-                        'Rp. 177.000',
+                        'Rp. 35.000',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -280,16 +285,54 @@ class _PDAMState extends State<PDAM> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.only(left: 40, right: 40),
+                      backgroundColor: const Color(0xff177F7E),
                       elevation: 0,
-                      primary: const Color(0xff177F7E),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100),
                       ),
                     ),
-                    onPressed: () => openGdcPay(
-                      apps: "PDAM SURABAYA",
-                      nominal: "177000",
-                    ),
+                    onPressed: () async {
+                      String url = Uri(
+                        scheme: 'app',
+                        host: 'biller.gdcpay.id',
+                        path: '/bayar',
+                        queryParameters: {
+                          "kd_biller": "2212005",
+                          "id_pelanggan": "1008007082",
+                          "nama_terdaftar": "Akir",
+                          "alamat_terdaftar": "Yogya",
+                          "ket_tarif": "Rumah Tangga B",
+                          "stand_meter": "510-520",
+                          "pemakaian": "10 m3",
+                          "ket_tagihan": "Rp 89.000 / 1 Bln",
+                        },
+                      ).toString();
+
+                      log(url);
+
+                      String urlencrypt = sha256
+                          .convert(utf8.encode(url))
+                          .toString()
+                          .toUpperCase();
+
+                      String secretkey =
+                          '1Nj9DEAboE8l2vYKSPrZDQ1QjfM7gySNGl5lcNXSxABM6ohD1AZPrvEJVerjans6';
+
+                      String dataSign = "$urlencrypt:$secretkey";
+
+                      Hmac hmac = Hmac(sha512, utf8.encode(secretkey));
+
+                      Digest digest = hmac.convert(utf8.encode(dataSign));
+
+                      String base64Mac = base64.encode(digest.bytes);
+
+                      await launchUrlString('$url&sig=$base64Mac');
+                    },
+                    // openGdcPay(
+                    //   apps: "PDAM SURABAYA",
+                    //   data:
+                    //       "PDAMMLG#1008007082#Akir#Ds. Pal. Barat Blok VII#Rumah Tangga B#510-520#10 m3#Rp 35.000 / 1 Bln",
+                    // ),
                     child: const Text(
                       'Bayar',
                     ),
@@ -303,11 +346,39 @@ class _PDAMState extends State<PDAM> {
     );
   }
 
-  openGdcPay({required String nominal, required String apps}) {
-    platform.invokeMethod('openGDCPay', <String, dynamic>{
-      "package": "asia.cyberlabs.gdc",
-      "apps": apps,
-      "nominal": nominal,
-    });
+  Future openGdcPay() async {
+    String url = Uri(
+      scheme: 'app',
+      host: 'biller.gdcpay.id',
+      path: '/bayar',
+      queryParameters: {
+        "kd_biller": "2212005",
+        "id_pelanggan": "1008007082",
+        "nama_terdaftar": "Akir",
+        "alamat_terdaftar": "Yogya",
+        "ket_tarif": "Rumah Tangga B",
+        "stand_meter": "510-520",
+        "pemakaian": "10 m3",
+        "ket_tagihan": "Rp 89.000 / 1 Bln",
+      },
+    ).toString();
+
+    log(url);
+
+    String urlencrypt =
+        sha256.convert(utf8.encode(url)).toString().toUpperCase();
+
+    String secretkey =
+        '1Nj9DEAboE8l2vYKSPrZDQ1QjfM7gySNGl5lcNXSxABM6ohD1AZPrvEJVerjans6';
+
+    String dataSign = "$urlencrypt:$secretkey";
+
+    Hmac hmac = Hmac(sha512, utf8.encode(secretkey));
+
+    Digest digest = hmac.convert(utf8.encode(dataSign));
+
+    String base64Mac = base64.encode(digest.bytes);
+
+    await launchUrlString('$url&sig=$base64Mac');
   }
 }

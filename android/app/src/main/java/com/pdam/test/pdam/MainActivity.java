@@ -21,7 +21,6 @@ public class MainActivity extends FlutterActivity {
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
 
-
         BinaryMessenger messenger = flutterEngine.getDartExecutor().getBinaryMessenger();
 
         MethodChannel channel = new MethodChannel(messenger, CHANNEL_IKI_ALIVE);
@@ -30,31 +29,31 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
                 String namaPackage = call.argument("package");
-                String nominal = call.argument("nominal");
+                String data = call.argument("data");
                 String apps = call.argument("apps");
                 switch (call.method) {
                     case "openGDCPay":
-                        launchApp2(namaPackage, nominal, apps);
+                        launchApp2(namaPackage, data, apps);
                         break;
                 }
             }
         });
     }
 
-    private void launchApp2(String packageName,String nominal, String apps) {
+    private void launchApp2(String packageName, String data, String apps) {
         Intent intent = new Intent();
         intent.setPackage(packageName);
 
-        ComponentName name=new ComponentName("asia.cyberlabs.gdc",
+        ComponentName name = new ComponentName("asia.cyberlabs.gdc",
                 "id.co.gdc.SplashScreenActivity");
-        Intent i=new Intent(Intent.ACTION_MAIN);
+        Intent i = new Intent(Intent.ACTION_MAIN);
 
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
         i.setComponent(name);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.putExtra("apps", apps);
-        i.putExtra("nominal", nominal);
+        i.putExtra("data", data);
         startActivity(i);
     }
 }

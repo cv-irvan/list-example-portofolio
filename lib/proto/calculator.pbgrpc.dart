@@ -14,12 +14,13 @@ import 'calculator.pb.dart' as $0;
 export 'calculator.pb.dart';
 
 class CalculatorClient extends $grpc.Client {
+  static final _$getProvinsi =
+      $grpc.ClientMethod<$0.InputGetProvinsi, $0.MyResponse>(
+          '/Calculator/GetProvinsi',
+          ($0.InputGetProvinsi value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.MyResponse.fromBuffer(value));
   static final _$squareRoot = $grpc.ClientMethod<$0.Number, $0.Message>(
       '/Calculator/SquareRoot',
-      ($0.Number value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Message.fromBuffer(value));
-  static final _$squareRoot2 = $grpc.ClientMethod<$0.Number, $0.Message>(
-      '/Calculator/SquareRoot2',
       ($0.Number value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Message.fromBuffer(value));
 
@@ -28,14 +29,14 @@ class CalculatorClient extends $grpc.Client {
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
 
+  $grpc.ResponseFuture<$0.MyResponse> getProvinsi($0.InputGetProvinsi request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getProvinsi, request, options: options);
+  }
+
   $grpc.ResponseFuture<$0.Message> squareRoot($0.Number request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$squareRoot, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$0.Message> squareRoot2($0.Number request,
-      {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$squareRoot2, request, options: options);
   }
 }
 
@@ -43,6 +44,13 @@ abstract class CalculatorServiceBase extends $grpc.Service {
   $core.String get $name => 'Calculator';
 
   CalculatorServiceBase() {
+    $addMethod($grpc.ServiceMethod<$0.InputGetProvinsi, $0.MyResponse>(
+        'GetProvinsi',
+        getProvinsi_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.InputGetProvinsi.fromBuffer(value),
+        ($0.MyResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.Number, $0.Message>(
         'SquareRoot',
         squareRoot_Pre,
@@ -50,13 +58,11 @@ abstract class CalculatorServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Number.fromBuffer(value),
         ($0.Message value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Number, $0.Message>(
-        'SquareRoot2',
-        squareRoot2_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.Number.fromBuffer(value),
-        ($0.Message value) => value.writeToBuffer()));
+  }
+
+  $async.Future<$0.MyResponse> getProvinsi_Pre($grpc.ServiceCall call,
+      $async.Future<$0.InputGetProvinsi> request) async {
+    return getProvinsi(call, await request);
   }
 
   $async.Future<$0.Message> squareRoot_Pre(
@@ -64,13 +70,8 @@ abstract class CalculatorServiceBase extends $grpc.Service {
     return squareRoot(call, await request);
   }
 
-  $async.Future<$0.Message> squareRoot2_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.Number> request) async {
-    return squareRoot2(call, await request);
-  }
-
+  $async.Future<$0.MyResponse> getProvinsi(
+      $grpc.ServiceCall call, $0.InputGetProvinsi request);
   $async.Future<$0.Message> squareRoot(
-      $grpc.ServiceCall call, $0.Number request);
-  $async.Future<$0.Message> squareRoot2(
       $grpc.ServiceCall call, $0.Number request);
 }
